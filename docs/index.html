@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WeatherNext 3 Vietnam WebGIS</title>
+<meta name="description" content="WeatherNext 3 static WebGIS for Vietnam and Mekong Delta">
+<link rel="stylesheet" href="https://unpkg.com/maplibre-gl@5.6.1/dist/maplibre-gl.css">
+<link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+<header class="topbar"><div><div class="eyebrow">BASE27 · VIETFLEX WEATHER LAB</div><h1>WeatherNext 3 · Việt Nam</h1></div><div id="status" class="status">Đang đọc catalog…</div></header>
+<main><aside class="panel">
+<label>Vùng</label><select id="region"></select>
+<label>Sản phẩm</label><select id="product"></select>
+<label>Forecast hour</label><input id="forecast" type="range" min="0" max="0" value="0">
+<div class="range-row"><span>Lead time</span><strong id="forecastLabel">—</strong></div>
+<label>Độ trong suốt</label><input id="opacity" type="range" min="0" max="100" step="5" value="75">
+<section class="card"><div class="card-title" id="layerTitle">Chưa có lớp forecast</div><div class="stats" id="stats"></div></section>
+<section class="card"><div class="card-title">Chú giải</div><div id="legend"></div></section>
+<section class="card help"><div class="card-title">Pipeline</div><code>WeatherNext 3 → GEE → GeoTIFF → PNG/catalog → GitHub Pages</code></section>
+<p class="note">Dữ liệu WeatherNext 3 là dữ liệu thử nghiệm; không thay thế cảnh báo khí tượng chính thức.</p>
+</aside><div id="map"></div></main>
+<script src="https://unpkg.com/maplibre-gl@5.6.1/dist/maplibre-gl.js"></script><script src="js/app.js"></script>
+</body></html>
