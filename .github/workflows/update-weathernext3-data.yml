@@ -1,0 +1,46 @@
+name: Update WeatherNext 3 data
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '25 0,6,12,18 * * *'
+
+permissions:
+  contents: write
+
+jobs:
+  update-weather:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install
+        run: pip install -r weather-next3/scripts/requirements.txt
+
+      - name: Download latest WeatherNext 3 forecast
+        env:
+          GEE_PROJECT_ID: ${{ secrets.GEE_PROJECT_ID }}
+          GEE_SERVICE_ACCOUNT_JSON: ${{ secrets.GEE_SERVICE_ACCOUNT_JSON }}
+          OUTPUT_DIR: input
+        run: python weather-next3/scripts/download_latest.py
+
+      - name: Build static WebGIS layers
+        run: python weather-next3/scripts/prepare_web.py --input input --output docs/data
+
+      - name: Store run metadata
+        run: cp input/run.json docs/data/run.json
+
+      - name: Commit refreshed forecast
+        run: |
+          git config user.name "weathernext3-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add docs/data
+          git diff --cached --quiet && exit 0
+          git commit -m "Update WeatherNext 3 forecast"
+          git push
